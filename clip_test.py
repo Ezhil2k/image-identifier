@@ -92,14 +92,3 @@ if __name__ == "__main__":
     print("Closest match:")
     print("  →", results[0])
     show_result(results[0])
-
-
-# import torch
-# import clip
-# from PIL import Image
-
-# # Load the CLIP model
-# device = "cuda" if torch.cuda.is_available() else "cpu"
-# model, preprocess = clip.load("ViT-B/32", device=device)
-
-# print(f"CLIP model loaded on: {device}")

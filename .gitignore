@@ -57,3 +57,5 @@ output/
 *.egg-info/
 dist/
 build/
+
+image_paths.txt

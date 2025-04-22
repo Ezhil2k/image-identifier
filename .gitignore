@@ -1,0 +1,59 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+*.dll
+*.pyd
+
+# Virtual environment
+venv/
+.env/
+.envrc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# macOS / Linux / Windows system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Model & data cache
+*.pth
+*.pt
+*.h5
+*.npy
+*.npz
+
+# FAISS or index files (if generated)
+*.index
+*.faiss
+*.pkl
+
+# Face embedding output or cache
+embeddings/
+clusters/
+face_data/
+
+# Images you want to ignore
+output/
+*.jpeg
+*.jpg
+*.png
+*.gif
+
+# VSCode or other IDE settings
+.vscode/
+.idea/
+
+# Python cache
+*.egg-info/
+dist/
+build/

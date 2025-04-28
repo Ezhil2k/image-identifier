@@ -60,3 +60,4 @@ build/
 
 image_paths.txt
 images/
+*.Identifier

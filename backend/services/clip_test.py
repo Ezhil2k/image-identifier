@@ -1,3 +1,5 @@
+#clip_test.py
+
 import os
 import torch
 import clip

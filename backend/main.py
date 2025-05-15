@@ -1,9 +1,23 @@
 from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from services.embedding_service import process_images, search_images
 from services.face_grouping_service import group_faces
 from services.watcher import start_watching
 
 app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount the images directory
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 # Start the image watcher on app startup
 @app.on_event("startup")

@@ -7,7 +7,7 @@ export default async function HomePage({
 }: {
   searchParams: { q?: string }
 }) {
-  const query = searchParams.q || ""
+  const query = (await Promise.resolve(searchParams.q)) || ""
   const photos = await getPhotos(query)
 
   return (

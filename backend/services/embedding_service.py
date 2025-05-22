@@ -66,10 +66,14 @@ def search_images(text_query: str, top_k: int = 3):
     if index.ntotal == 0:
         return []
 
+    # If no query is provided, return all images
+    if not text_query.strip():
+        return image_paths
+
     tokens = clip.tokenize([text_query]).to(device)
     with torch.no_grad():
         text_emb = model.encode_text(tokens)
         text_emb /= text_emb.norm(dim=-1, keepdim=True)
 
-    D, I = index.search(text_emb.cpu().numpy(), top_k)
+    D, I = index.search(text_emb.cpu().numpy(), min(top_k, len(image_paths)))
     return [image_paths[i] for i in I[0]]

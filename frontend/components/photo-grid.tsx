@@ -15,8 +15,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
       {photos.map((photo) => (
         <div
           key={photo.id}
-          className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-          style={{ height: `${photo.height}px` }}
+          className="relative group aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
         >
           <Image
             src={photo.url || "/placeholder.svg"}

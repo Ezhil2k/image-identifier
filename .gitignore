@@ -61,3 +61,7 @@ build/
 image_paths.txt
 images/
 *.Identifier
+
+.env
+.env.local
+.env.*.local

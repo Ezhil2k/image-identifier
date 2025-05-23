@@ -19,6 +19,10 @@ app.add_middleware(
 # Mount the images directory
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
+@app.get("/")
+def read_root():
+    return {"message": "Hello world"}
+
 # Start the image watcher on app startup
 @app.on_event("startup")
 def startup_event():

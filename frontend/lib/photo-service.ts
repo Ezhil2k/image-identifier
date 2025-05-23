@@ -1,6 +1,6 @@
 import type { Photo, FaceAlbum } from "./types"
 
-const API_URL = "http://localhost:8000"
+const API_URL = process.env.FASTAPI_PUBLIC_API_URL || "http://localhost:8000"
 
 // Function to get photos with optional search filter
 export async function getPhotos(query = ""): Promise<Photo[]> {

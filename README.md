@@ -16,7 +16,7 @@ image-identifier is a modular AI-based image search engine designed for semantic
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/image-identifier.git
+git clone https://github.com/Ezhil2k/image-identifier.git
 cd image-identifier
 ```
 

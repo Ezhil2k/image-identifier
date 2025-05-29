@@ -7,7 +7,8 @@ export default async function FacesPage({
 }: {
   searchParams: { q?: string }
 }) {
-  const query = (await Promise.resolve(searchParams.q)) || ""
+  const { q } = await searchParams
+  const query = q || ""
   const faceAlbums = await getFaceAlbums(query)
 
   return (

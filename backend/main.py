@@ -1,9 +1,10 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from services.embedding_service import process_images, search_images
+from services.embedding_service import process_images, search_images, _rebuild_index
 from services.face_grouping_service import group_faces
 from services.watcher import start_watching
+import os
 
 app = FastAPI()
 
@@ -17,7 +18,7 @@ app.add_middleware(
 )
 
 # Mount the images directory
-app.mount("/images", StaticFiles(directory="../images"), name="images")
+app.mount("/images", StaticFiles(directory=os.getenv("IMAGE_DIR", "/app/images")), name="images")
 
 # Start the image watcher on app startup
 @app.on_event("startup")
@@ -29,9 +30,14 @@ def startup_event():
 def process_route():
     return process_images()
 
+@app.post("/reprocess-all")
+def reprocess_all_route():
+    """Completely rebuild the index from all existing images"""
+    return _rebuild_index()
+
 @app.get("/search")
-def search_route(q: str = Query(..., alias="q"), top_k: int = 3):
-    return {"results": search_images(q, top_k)}
+def search_route(q: str = Query(..., alias="q")):
+    return {"results": search_images(q)}
 
 @app.get("/face-groups")
 def get_face_clusters():

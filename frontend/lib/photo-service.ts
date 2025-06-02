@@ -40,3 +40,20 @@ export async function getFaceAlbums(query = ""): Promise<FaceAlbum[]> {
     return []
   }
 }
+
+// Function to process new images
+export async function processImages(): Promise<{ indexed: number; total: number; status: string }> {
+  try {
+    const response = await fetch(`${API_URL}/process-images`, {
+      method: 'POST',  // Explicitly set method to POST
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error processing images:', error)
+    throw error
+  }
+}

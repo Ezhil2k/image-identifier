@@ -9,12 +9,11 @@ services:
       - "8000:8000"
     volumes:
       - ./images:/app/images  # Bind mount for images (needed for frontend access)
-      - ./backend/data:/app/data  # Bind mount for backend data
     environment:
       - PYTHONUNBUFFERED=1
       - PORT=8000
-      - INDEX_FILE=/app/data/faiss.index
-      - PATHS_FILE=/app/data/image_paths.txt
+      - INDEX_FILE=/app/faiss.index
+      - PATHS_FILE=/app/image_paths.txt
       - IMAGE_DIR=/app/images
     restart: unless-stopped
     healthcheck:

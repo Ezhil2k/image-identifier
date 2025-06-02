@@ -36,3 +36,7 @@ def search_route(q: str = Query(..., alias="q"), top_k: int = 3):
 @app.get("/face-groups")
 def get_face_clusters():
     return group_faces()
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}

@@ -34,6 +34,63 @@ def _get_all_image_paths():
     return [os.path.join(IMAGE_DIR, f) for f in os.listdir(IMAGE_DIR)
             if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
 
+def _rebuild_index():
+    """Rebuild the index from scratch using only existing images"""
+    print("[Embedding] Rebuilding index from existing images...")
+    all_paths = _get_all_image_paths()
+    if not all_paths:
+        # If no images exist, create empty index
+        index = faiss.IndexFlatIP(512)
+        _save_index(index, [])
+        return {"status": "ok", "message": "No images found, created empty index", "total": 0}
+
+    # Create new index
+    index = faiss.IndexFlatIP(512)
+    valid_paths = []
+    failed_paths = []
+    
+    for path in all_paths:
+        try:
+            img = Image.open(path).convert("RGB")
+            img_tensor = preprocess(img).unsqueeze(0).to(device)
+            with torch.no_grad():
+                emb = model.encode_image(img_tensor).cpu().numpy()
+            index.add(emb)
+            valid_paths.append(path)
+        except Exception as e:
+            print(f"[Error] Failed to process {path}: {e}")
+            failed_paths.append(path)
+
+    _save_index(index, valid_paths)
+    print(f"[Embedding] Rebuilt index with {len(valid_paths)} images")
+    
+    return {
+        "status": "ok",
+        "message": f"Successfully processed {len(valid_paths)} images",
+        "total": len(valid_paths),
+        "failed": len(failed_paths),
+        "failed_paths": failed_paths if failed_paths else None
+    }
+
+def remove_deleted_image(deleted_path: str):
+    """Remove a deleted image from the index and paths file"""
+    index, paths = _load_index()
+    if not paths:
+        return
+
+    # Find the index of the deleted path
+    try:
+        deleted_idx = paths.index(deleted_path)
+        # Remove the path
+        paths.pop(deleted_idx)
+        
+        # Rebuild the index since FAISS doesn't support direct removal
+        _rebuild_index()
+        print(f"[Embedding] Removed deleted image: {deleted_path}")
+    except ValueError:
+        # Path wasn't in the index, nothing to do
+        pass
+
 # === Main Embedding Function ===
 
 def process_images():
@@ -61,7 +118,7 @@ def process_images():
 
 # === Text Search Function ===
 
-def search_images(text_query: str, top_k: int = 3):
+def search_images(text_query: str):
     index, image_paths = _load_index()
     if index.ntotal == 0:
         return []
@@ -75,5 +132,6 @@ def search_images(text_query: str, top_k: int = 3):
         text_emb = model.encode_text(tokens)
         text_emb /= text_emb.norm(dim=-1, keepdim=True)
 
-    D, I = index.search(text_emb.cpu().numpy(), min(top_k, len(image_paths)))
+    # Search all images
+    D, I = index.search(text_emb.cpu().numpy(), len(image_paths))
     return [image_paths[i] for i in I[0]]

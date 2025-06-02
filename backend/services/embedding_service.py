@@ -12,7 +12,7 @@ model, preprocess = clip.load("ViT-B/32", device=device)
 
 INDEX_FILE = "faiss.index"
 PATHS_FILE = "image_paths.txt"
-IMAGE_DIR = "images"
+IMAGE_DIR = "../images"
 
 # === Internal Helpers ===
 

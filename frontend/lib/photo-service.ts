@@ -26,12 +26,12 @@ export async function getPhotos(query = ""): Promise<Photo[]> {
 export async function getFaceAlbums(query = ""): Promise<FaceAlbum[]> {
   try {
     const response = await fetch(`${API_URL}/face-groups`)
-    const data = await response.json()
+    const data = await response.json() as { clusters: Record<string, string[]> }
     
     // Transform the clusters into face albums
-    return Object.entries(data.clusters).map(([id, images]: [string, string[]]) => ({
+    return Object.entries(data.clusters).map(([id, images]) => ({
       id,
-      name: `Face Group ${parseInt(id) + 1}`,
+      name: "",  // Empty name since we don't want any labels
       coverImage: `${API_URL}/images/${encodeURIComponent(images[0].replace('images/', ''))}`,
       count: images.length,
     }))

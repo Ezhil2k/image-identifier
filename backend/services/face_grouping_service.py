@@ -5,7 +5,8 @@ import face_recognition
 import numpy as np
 from sklearn.cluster import DBSCAN
 
-IMAGE_DIR = "images"
+# Get absolute path to images directory
+IMAGE_DIR = "../images"
 CLUSTER_DIR = "clusters"
 
 def load_face_encodings(image_dir=IMAGE_DIR):
@@ -23,7 +24,8 @@ def load_face_encodings(image_dir=IMAGE_DIR):
                     img, known_face_locations=face_bounding_boxes
                 )[0]
                 encodings.append(face_encoding)
-                paths.append(path)
+                # Store just the filename for the path to avoid ../ prefix issues
+                paths.append(filename)
 
     return np.array(encodings), paths
 

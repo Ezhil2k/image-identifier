@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 # Mount the images directory
-app.mount("/images", StaticFiles(directory="images"), name="images")
+app.mount("/images", StaticFiles(directory="../images"), name="images")
 
 # Start the image watcher on app startup
 @app.on_event("startup")

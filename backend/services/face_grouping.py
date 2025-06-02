@@ -7,7 +7,7 @@ from sklearn.cluster import DBSCAN
 from PIL import Image
 import matplotlib.pyplot as plt
 
-IMAGE_DIR = "images"
+IMAGE_DIR = "../images"
 CLUSTER_DIR = "clusters"
 
 def load_face_encodings(image_dir):

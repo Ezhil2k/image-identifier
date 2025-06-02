@@ -11,7 +11,7 @@ class ImageHandler(FileSystemEventHandler):
             print(f"[Watcher] New image detected: {event.src_path}")
             process_images()
 
-def start_watching(path="images"):
+def start_watching(path="../images"):
     path = os.path.abspath(path)  # ensure full path
     event_handler = ImageHandler()
     observer = Observer()

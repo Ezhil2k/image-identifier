@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from services.embedding_service import process_images, search_images, _rebuild_index
+from services.embedding_service import process_images, search_images
 from services.face_grouping_service import group_faces
 from services.watcher import start_watching
 import os
@@ -29,11 +29,6 @@ def startup_event():
 @app.post("/process-images")
 def process_route():
     return process_images()
-
-@app.post("/reprocess-all")
-def reprocess_all_route():
-    """Completely rebuild the index from all existing images"""
-    return _rebuild_index()
 
 @app.get("/search")
 def search_route(q: str = Query(..., alias="q")):

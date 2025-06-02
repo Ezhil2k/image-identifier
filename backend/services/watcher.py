@@ -5,10 +5,46 @@ from .embedding_service import process_images, remove_deleted_image
 import os
 
 class ImageHandler(FileSystemEventHandler):
+    def __init__(self):
+        self.processing_files = set()  # Track files being processed
+        self.max_retries = 3
+        self.retry_delay = 2  # seconds
+
+    def process_with_retry(self, file_path):
+        """Process an image with retry logic"""
+        if file_path in self.processing_files:
+            return  # Skip if already processing this file
+            
+        self.processing_files.add(file_path)
+        retry_count = 0
+        
+        while retry_count < self.max_retries:
+            try:
+                print(f"[Watcher] Processing image (attempt {retry_count + 1}/{self.max_retries}): {file_path}")
+                result = process_images()
+                if result["status"] == "ok":
+                    print(f"[Watcher] Successfully processed image: {file_path}")
+                    break
+                else:
+                    print(f"[Watcher] Processing returned status: {result['status']}")
+            except Exception as e:
+                print(f"[Watcher] Error processing {file_path} (attempt {retry_count + 1}): {str(e)}")
+            
+            retry_count += 1
+            if retry_count < self.max_retries:
+                print(f"[Watcher] Retrying in {self.retry_delay} seconds...")
+                time.sleep(self.retry_delay)
+        
+        self.processing_files.remove(file_path)
+        if retry_count == self.max_retries:
+            print(f"[Watcher] Failed to process {file_path} after {self.max_retries} attempts")
+
     def on_created(self, event):
         if not event.is_directory and event.src_path.lower().endswith(('.png', '.jpg', '.jpeg')):
             print(f"[Watcher] New image detected: {event.src_path}")
-            process_images()
+            # Wait a short time to ensure file is fully written
+            time.sleep(1)
+            self.process_with_retry(event.src_path)
 
     def on_deleted(self, event):
         if not event.is_directory and event.src_path.lower().endswith(('.png', '.jpg', '.jpeg')):

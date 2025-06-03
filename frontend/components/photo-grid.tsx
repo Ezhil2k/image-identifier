@@ -14,7 +14,8 @@ function PhotoCard({ photo }: { photo: Photo }) {
   return (
     <div
       key={photo.id}
-      className="relative group aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-40 h-40 mx-auto"
+      className="relative group aspect-square overflow-hidden rounded-lg border-2 border-gray-700 shadow-md hover:shadow-lg transition-shadow duration-300 w-40 h-40 mx-auto"
+      style={{ borderColor: 'rgba(var(--border-color), 0.8)' }}
     >
       <Image
         src={photo.url || "/placeholder.svg"}
@@ -24,10 +25,10 @@ function PhotoCard({ photo }: { photo: Photo }) {
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         onError={() => setError(true)} // Hide image if it fails to load
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
         <div className="p-2 w-full">
-          {photo.title && <h3 className="text-white font-medium truncate text-xs">{photo.title}</h3>}
-          {photo.date && <p className="text-gray-200 text-xs">{photo.date}</p>}
+          {photo.title && <h3 className="text-white font-retro truncate text-[0.6rem]">{photo.title}</h3>}
+          {photo.date && <p className="text-gray-400 font-retro text-[0.5rem]">{photo.date}</p>}
         </div>
       </div>
     </div>

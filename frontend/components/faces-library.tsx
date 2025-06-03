@@ -15,7 +15,9 @@ function FaceAlbumCard({ album }: { album: FaceAlbum }) {
   return (
     <Link href={`/faces/${album.id}`} key={album.id} className="group">
       <div className="relative">
-        <div className="aspect-square relative overflow-hidden rounded-full border-2 border-white dark:border-gray-800 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105 w-32 h-32 mx-auto">
+        <div className="aspect-square relative overflow-hidden rounded-full border-2 border-gray-700 dark:border-gray-800 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105 w-32 h-32 mx-auto"
+         style={{ borderColor: 'rgba(var(--border-color), 0.8)' }}
+        >
           <Image
             src={album.coverImage || "/placeholder.svg"}
             alt="Face group"
@@ -26,8 +28,8 @@ function FaceAlbumCard({ album }: { album: FaceAlbum }) {
           />
         </div>
         <div className="mt-2 text-center">
-          {album.name && <h3 className="font-medium truncate text-sm">{album.name}</h3>}
-          <p className="text-xs text-gray-500 dark:text-gray-400">{album.count} photos</p>
+          {album.name && <h3 className="font-retro truncate text-sm text-white">{album.name}</h3>}
+          <p className="text-[0.6rem] font-retro text-gray-400">{album.count} photos</p>
         </div>
       </div>
     </Link>

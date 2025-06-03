@@ -63,7 +63,7 @@ export default function FaceGroupPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-end">
-        <p className="text-gray-500 dark:text-gray-400">{photos.length} photos</p>
+        <p className="text-gray-400 dark:text-gray-400 font-retro">{photos.length} photos</p>
       </div>
       <PhotoGrid photos={photos} />
     </div>

@@ -42,30 +42,6 @@ A modern web application for organizing and searching through your photo collect
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Development
-
-### Backend (FastAPI)
-
-The backend service runs in Docker and provides:
-- Image embedding and search
-- Face detection and grouping
-- File system watching for automatic updates
-
-Key environment variables (configured in docker-compose.yml):
-- `PORT`: Backend server port (default: 8000)
-- `INDEX_FILE`: Path to FAISS index file
-- `PATHS_FILE`: Path to image paths mapping file
-- `IMAGE_DIR`: Directory containing images
-
-### Frontend (Next.js)
-
-To run frontend development server:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
 ### Docker Services
 
 The application uses Docker Compose for containerization:

@@ -14,18 +14,22 @@ function FaceAlbumCard({ album }: { album: FaceAlbum }) {
 
   return (
     <Link href={`/faces/${album.id}`} key={album.id} className="group">
-      <div className="aspect-square relative overflow-hidden rounded-full border-2 border-white dark:border-gray-800 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-        <Image
-          src={album.coverImage || "/placeholder.svg"}
-          alt="Face group"
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-          className="object-cover"
-          onError={() => setError(true)} // Hide image if it fails to load
-        />
+      <div className="relative">
+        <div className="aspect-square relative overflow-hidden rounded-full border-2 border-white dark:border-gray-800 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105 w-32 h-32 mx-auto">
+          <Image
+            src={album.coverImage || "/placeholder.svg"}
+            alt="Face group"
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            className="object-cover"
+            onError={() => setError(true)} // Hide image if it fails to load
+          />
+        </div>
+        <div className="mt-2 text-center">
+          {album.name && <h3 className="font-medium truncate text-sm">{album.name}</h3>}
+          <p className="text-xs text-gray-500 dark:text-gray-400">{album.count} photos</p>
+        </div>
       </div>
-      {album.name && <h3 className="mt-3 text-center font-medium truncate">{album.name}</h3>}
-      <p className="text-center text-sm text-gray-500 dark:text-gray-400">{album.count} photos</p>
     </Link>
   )
 }
@@ -40,7 +44,7 @@ export default function FacesLibrary({ faceAlbums }: { faceAlbums: FaceAlbum[] }
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8">
       {faceAlbums.map((album) => (
         <FaceAlbumCard key={album.id} album={album} />
       ))}

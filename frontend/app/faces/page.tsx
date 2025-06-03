@@ -30,15 +30,9 @@ export default function FacesPage() {
     }
   }
 
-  // Initial fetch
+  // Initial fetch and fetch on query change
   useEffect(() => {
     fetchFaceAlbums()
-  }, [query])
-
-  // Poll for updates every 10 seconds
-  useEffect(() => {
-    const interval = setInterval(fetchFaceAlbums, 10000)
-    return () => clearInterval(interval)
   }, [query])
 
   return (

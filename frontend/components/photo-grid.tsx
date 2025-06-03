@@ -14,20 +14,20 @@ function PhotoCard({ photo }: { photo: Photo }) {
   return (
     <div
       key={photo.id}
-      className="relative group aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+      className="relative group aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 w-40 h-40 mx-auto"
     >
       <Image
         src={photo.url || "/placeholder.svg"}
         alt={photo.title || "Photo"}
         fill
-        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         onError={() => setError(true)} // Hide image if it fails to load
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-        <div className="p-4 w-full">
-          {photo.title && <h3 className="text-white font-medium truncate">{photo.title}</h3>}
-          {photo.date && <p className="text-gray-200 text-sm">{photo.date}</p>}
+        <div className="p-2 w-full">
+          {photo.title && <h3 className="text-white font-medium truncate text-xs">{photo.title}</h3>}
+          {photo.date && <p className="text-gray-200 text-xs">{photo.date}</p>}
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-6">
       {photos.map((photo) => (
         <PhotoCard key={photo.id} photo={photo} />
       ))}

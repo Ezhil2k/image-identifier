@@ -2,6 +2,7 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from .embedding_service import process_images, remove_deleted_image
+from .face_grouping_service import process_faces, remove_deleted_face
 import os
 
 class ImageHandler(FileSystemEventHandler):
@@ -11,7 +12,7 @@ class ImageHandler(FileSystemEventHandler):
         self.retry_delay = 2  # seconds
 
     def process_with_retry(self, file_path):
-        """Process an image with retry logic"""
+        """Process an image with retry logic for both embeddings and faces"""
         if file_path in self.processing_files:
             return  # Skip if already processing this file
             
@@ -21,12 +22,17 @@ class ImageHandler(FileSystemEventHandler):
         while retry_count < self.max_retries:
             try:
                 print(f"[Watcher] Processing image (attempt {retry_count + 1}/{self.max_retries}): {file_path}")
-                result = process_images()
-                if result["status"] == "ok":
+                # Process both embeddings and faces
+                embedding_result = process_images()
+                face_result = process_faces()
+                
+                if embedding_result["status"] == "ok":
                     print(f"[Watcher] Successfully processed image: {file_path}")
+                    print(f"[Watcher] Embeddings: {embedding_result}")
+                    print(f"[Watcher] Faces: {face_result}")
                     break
                 else:
-                    print(f"[Watcher] Processing returned status: {result['status']}")
+                    print(f"[Watcher] Processing returned status: {embedding_result['status']}")
             except Exception as e:
                 print(f"[Watcher] Error processing {file_path} (attempt {retry_count + 1}): {str(e)}")
             
@@ -49,7 +55,9 @@ class ImageHandler(FileSystemEventHandler):
     def on_deleted(self, event):
         if not event.is_directory and event.src_path.lower().endswith(('.png', '.jpg', '.jpeg')):
             print(f"[Watcher] Image deleted: {event.src_path}")
+            # Remove from both embeddings and faces
             remove_deleted_image(event.src_path)
+            remove_deleted_face(event.src_path)
 
 def start_watching():
     watch_path = os.getenv("IMAGE_DIR", "/app/images")
@@ -78,5 +86,4 @@ def start_watching():
                 time.sleep(retry_delay)
             else:
                 print(f"[Watcher] Failed to start watcher after {max_retries} attempts: {e}")
-                # Don't raise the error, let the application continue running
                 return None

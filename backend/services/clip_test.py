@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 device = "cuda" if torch.cuda.is_available() else "cpu"
 INDEX_FILE = "faiss.index"
 PATHS_FILE = "image_paths.txt"
-IMAGE_DIR = "images"
+IMAGE_DIR = "../images"
 
 # === Load CLIP Model ===
 print(f"[INFO] Loading CLIP model on: {device}")

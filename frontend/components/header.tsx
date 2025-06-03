@@ -2,13 +2,15 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, Moon, Sun } from "lucide-react"
+import { Menu, Moon, Sun, RefreshCw } from "lucide-react"
 import { useState, useEffect } from "react"
+import { processImages } from "@/lib/photo-service"
 
 export default function Header() {
   const pathname = usePathname()
   const [darkMode, setDarkMode] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
     // Check for dark mode preference
@@ -28,6 +30,21 @@ export default function Header() {
     if (typeof window !== "undefined") {
       localStorage.setItem("darkMode", (!darkMode).toString())
       document.documentElement.classList.toggle("dark")
+    }
+  }
+
+  const handleRefresh = async () => {
+    if (isRefreshing) return
+    setIsRefreshing(true)
+    try {
+      const result = await processImages()
+      console.log("Processed images:", result)
+      // Trigger a page reload to show new images
+      window.location.reload()
+    } catch (error) {
+      console.error("Error refreshing images:", error)
+    } finally {
+      setIsRefreshing(false)
     }
   }
 
@@ -61,6 +78,18 @@ export default function Header() {
           </div>
 
           <div className="flex items-center space-x-2">
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                isRefreshing ? "animate-spin" : ""
+              }`}
+              aria-label="Refresh images"
+              title="Process new images"
+            >
+              <RefreshCw size={20} />
+            </button>
+
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"

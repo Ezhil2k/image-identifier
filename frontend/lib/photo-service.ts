@@ -26,17 +26,34 @@ export async function getPhotos(query = ""): Promise<Photo[]> {
 export async function getFaceAlbums(query = ""): Promise<FaceAlbum[]> {
   try {
     const response = await fetch(`${API_URL}/face-groups`)
-    const data = await response.json()
+    const data = await response.json() as { clusters: Record<string, string[]> }
     
     // Transform the clusters into face albums
-    return Object.entries(data.clusters).map(([id, images]: [string, string[]]) => ({
+    return Object.entries(data.clusters).map(([id, images]) => ({
       id,
-      name: `Face Group ${parseInt(id) + 1}`,
+      name: "",  // Empty name since we don't want any labels
       coverImage: `${API_URL}/images/${encodeURIComponent(images[0].replace('images/', ''))}`,
       count: images.length,
     }))
   } catch (error) {
     console.error('Error fetching face albums:', error)
     return []
+  }
+}
+
+// Function to process new images
+export async function processImages(): Promise<{ indexed: number; total: number; status: string }> {
+  try {
+    const response = await fetch(`${API_URL}/process-images`, {
+      method: 'POST',  // Explicitly set method to POST
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error('Error processing images:', error)
+    throw error
   }
 }

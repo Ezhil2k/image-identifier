@@ -1,87 +1,88 @@
-# image-identifier
+# Image Identifier
 
-image-identifier is a modular AI-based image search engine designed for semantic image retrieval and visual similarity matching. It features a FastAPI backend and Next.js frontend for an intuitive user interface.
+A modern web application for organizing and searching through your photo collection using AI-powered image recognition and face detection.
 
 ## Features
 
-- Search images using natural language queries
-- Find visually similar images
-- Face detection and grouping
-- Modern web interface with real-time search
-- Efficient vector indexing and fast search
-- Modular design for easy integration into larger applications
+- **AI-Powered Image Search**: Search images using natural language descriptions
+- **Face Detection & Grouping**: Automatically detect and group similar faces
+- **Real-time Updates**: Automatic processing of new images
+- **Modern UI**: Clean, responsive interface built with Next.js and Tailwind CSS
+- **Docker Support**: Easy deployment with Docker
 
-## Setup and Installation
+## Prerequisites
 
-### 1. Clone the Repository
+- Docker and Docker Compose
+- Node.js 18+ (for frontend development)
 
-```bash
-git clone https://github.com/Ezhil2k/image-identifier.git
-cd image-identifier
+## Quick Start
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Ezhil2k/image-identifier.git
+   cd image_identifier
+   ```
+
+2. Create an `images` directory for your photos:
+   ```bash
+   mkdir images
+   ```
+
+3. Start the backend service:
+   ```bash
+   docker-compose up -d backend
+   ```
+
+4. Start the frontend development server:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Docker Services
+
+The application uses Docker Compose for containerization:
+
+- **Backend Service**:
+  - FastAPI application
+  - Runs on port 8000
+  - Mounts `./images` directory
+  - Includes health checks
+  - Auto-restarts unless stopped manually
+
+## Project Structure
+
 ```
-
-### 2. Backend Setup
-
-```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate    # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### 3. Frontend Setup
-
-```bash
-cd frontend
-npm install
+image_identifier/
+├── backend/              # FastAPI backend
+│   ├── services/        # Core services (embedding, face detection)
+│   ├── main.py         # FastAPI application
+│   └── requirements.txt # Python dependencies
+├── frontend/            # Next.js frontend
+│   ├── app/            # Next.js app directory
+│   ├── components/     # React components
+│   └── package.json    # Node.js dependencies
+├── images/             # Photo directory (mounted in Docker)
+├── docker-compose.yml  # Docker services configuration
+└── README.md          # This file
 ```
 
 ## Usage
 
-### 1. Start the Backend Server
+1. **Adding Photos**:
+   - Place your images in the `images/` directory
+   - The backend watcher will automatically process new images
+   - Use the refresh button to force immediate processing
 
-```bash
-cd backend
-source venv/bin/activate    # On Windows: venv\Scripts\activate
-uvicorn main:app --reload
-```
+2. **Searching Images**:
+   - Use the search bar to find images by description
+   - Results update in real-time as you type
+   - Click on images to view full size
 
-The backend will be available at http://localhost:8000
-
-### 2. Start the Frontend Development Server
-
-```bash
-cd frontend
-npm run dev
-```
-
-The frontend will be available at http://localhost:3001
-
-### 3. Using the Application
-
-1. Add your images to the `backend/images/` directory
-2. Access the web interface at http://localhost:3001
-3. Use the search bar to find images using natural language
-4. Navigate to the Faces tab to view face groupings
-
-## Notes
-
-- Ensure both backend and frontend servers are running simultaneously
-- The backend will automatically process new images added to the images directory
-- Update backend dependencies after installing new packages:
-  ```bash
-  pip freeze > requirements.txt
-  ```
-- Update frontend dependencies after installing new packages:
-  ```bash
-  npm install <package-name>
-  ```
-
-## Notes
-
-- Ensure the virtual environment is activated before running any scripts.
-- Update the `requirements.txt` file after installing any new dependencies:
-
-```bash
-pip freeze > requirements.txt
-```
+3. **Face Detection**:
+   - Navigate to the Faces tab to view grouped faces
+   - Click on a face group to see all photos with that person
+   - Use the search bar to find specific face groups

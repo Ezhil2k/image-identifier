@@ -2,30 +2,44 @@
 
 import os
 import face_recognition
+from collections import defaultdict
 import numpy as np
 from sklearn.cluster import DBSCAN
+from typing import List, Tuple, Dict
 
-IMAGE_DIR = "images"
+# Get image directory from environment variable
+image_dir = os.getenv("IMAGE_DIR", "/app/images")
 CLUSTER_DIR = "clusters"
 
-def load_face_encodings(image_dir=IMAGE_DIR):
+def get_relative_path(absolute_path: str) -> str:
+    """Convert absolute path to relative path for the frontend."""
+    # Remove the /app prefix and any leading slashes
+    relative_path = absolute_path.replace("/app/images/", "")
+    return relative_path
+
+def load_face_encodings() -> Tuple[List[np.ndarray], List[str]]:
+    """Load face encodings from all images in the directory."""
     encodings = []
     paths = []
-
+    
     for filename in os.listdir(image_dir):
-        if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
-            path = os.path.join(image_dir, filename)
-            img = face_recognition.load_image_file(path)
-            face_bounding_boxes = face_recognition.face_locations(img)
-
-            if face_bounding_boxes:
-                face_encoding = face_recognition.face_encodings(
-                    img, known_face_locations=face_bounding_boxes
-                )[0]
-                encodings.append(face_encoding)
-                paths.append(path)
-
-    return np.array(encodings), paths
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            image_path = os.path.join(image_dir, filename)
+            try:
+                # Load image and find face encodings
+                image = face_recognition.load_image_file(image_path)
+                face_encodings = face_recognition.face_encodings(image)
+                
+                # Add each face encoding and its corresponding image path
+                for encoding in face_encodings:
+                    encodings.append(encoding)
+                    # Store relative path for frontend
+                    paths.append(filename)
+            except Exception as e:
+                print(f"Error processing {filename}: {str(e)}")
+                continue
+    
+    return encodings, paths
 
 def cluster_faces(encodings):
     clustering = DBSCAN(metric='euclidean', eps=0.6, min_samples=1)

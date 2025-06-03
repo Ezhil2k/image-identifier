@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from services.embedding_service import process_images, search_images
 from services.face_grouping_service import group_faces
 from services.watcher import start_watching
+import os
 
 app = FastAPI()
 
@@ -17,7 +18,7 @@ app.add_middleware(
 )
 
 # Mount the images directory
-app.mount("/images", StaticFiles(directory="images"), name="images")
+app.mount("/images", StaticFiles(directory=os.getenv("IMAGE_DIR", "/app/images")), name="images")
 
 @app.get("/")
 def read_root():
@@ -34,9 +35,13 @@ def process_route():
     return process_images()
 
 @app.get("/search")
-def search_route(q: str = Query(..., alias="q"), top_k: int = 3):
-    return {"results": search_images(q, top_k)}
+def search_route(q: str = Query(..., alias="q")):
+    return {"results": search_images(q)}
 
 @app.get("/face-groups")
 def get_face_clusters():
     return group_faces()
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}

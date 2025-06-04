@@ -6,49 +6,31 @@ import { Search, X } from "lucide-react"
 import { useRouter, usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
 
-export default function SearchBar({ initialQuery = "" }: { initialQuery?: string }) {
-  const [query, setQuery] = useState(initialQuery)
+const SearchBar = ({ initialQuery = '' }: { initialQuery?: string }) => {
   const router = useRouter()
   const pathname = usePathname()
-
-  useEffect(() => {
-    setQuery(initialQuery)
-  }, [initialQuery])
+  const [query, setQuery] = useState(initialQuery)
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (query) {
+    // Navigate to the current path with the new query parameter
       router.push(`${pathname}?q=${encodeURIComponent(query)}`)
-    } else {
-      router.push(pathname)
-    }
-  }
-
-  const clearSearch = () => {
-    setQuery("")
-    router.push(pathname)
   }
 
   return (
-    <form onSubmit={handleSearch} className="relative">
+    <form onSubmit={handleSearch} className="w-full max-w-xl mx-auto">
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <Search className="w-5 h-5 text-gray-400" />
-        </div>
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} /> {/* Icon color */}
         <input
-          type="search"
+          type="text"
+          placeholder="Search for images..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="block w-full p-3 pl-10 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search photos..."
+          className="w-full py-2 pl-10 pr-4 bg-gray-900 text-white border-2 border-gray-700 rounded-lg focus:outline-none focus:border-white font-retro text-[0.65rem]"
         />
-        {query && (
-          <button type="button" onClick={clearSearch} className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <X className="w-5 h-5 text-gray-400 hover:text-gray-500" />
-          </button>
-        )}
       </div>
     </form>
   )
 }
+
+export default SearchBar

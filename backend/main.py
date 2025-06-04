@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from services.embedding_service import process_images, search_images
-from services.face_grouping_service import group_faces
+from services.embedding_service import process_images, search_images, remove_deleted_image
+from services.face_grouping_service import process_faces, get_face_clusters, remove_deleted_face
 from services.watcher import start_watching
 import os
 
@@ -32,15 +32,27 @@ def startup_event():
 
 @app.post("/process-images")
 def process_route():
-    return process_images()
+    """Process both embeddings and faces for all images."""
+    # Process embeddings
+    embedding_result = process_images()
+    
+    # Process faces
+    face_result = process_faces()
+    
+    return {
+        "embeddings": embedding_result,
+        "faces": face_result,
+        "status": "ok"
+    }
 
 @app.get("/search")
 def search_route(q: str = Query(..., alias="q")):
     return {"results": search_images(q)}
 
 @app.get("/face-groups")
-def get_face_clusters():
-    return group_faces()
+def get_face_clusters_route():
+    """Get face clusters from cache, processing only if needed."""
+    return get_face_clusters()
 
 @app.get("/health")
 def health_check():

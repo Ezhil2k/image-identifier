@@ -49,82 +49,55 @@ export default function Header() {
   }
 
   const navItems = [
-    { name: "Photos", path: "/" },
-    { name: "Faces", path: "/faces" },
+    { name: "PHOTOS", path: "/" },
+    { name: "FACES", path: "/faces" },
   ]
 
   return (
-    <header className="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-sm">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
+    <header className="bg-black text-white p-4 border-b-2 border-gray-700" style={{ borderColor: 'rgba(var(--border-color), 0.8)' }}>
+      <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Link href="/" className="text-xl font-bold">
-              Photo Gallery
+          <Link href="/" className="font-bold text-white" style={{ fontSize: '0.85rem' }}>
+            <span className="font-retro" style={{ fontSize: '0.85rem' }}>RETRO GALLERY</span>
             </Link>
-
-            <nav className="hidden md:flex items-center space-x-4">
+          <span className="mx-2 text-gray-600 font-retro" style={{ fontSize: '0.85rem' }}>|</span>
+          <nav>
+            <ul className="flex space-x-4">
               {navItems.map((item) => (
+                <li key={item.path}>
                 <Link
-                  key={item.path}
                   href={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
-                    pathname === item.path ? "bg-gray-100 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`}
+                    className={`font-retro ${pathname === item.path ? 'text-white border-b-2 border-white' : 'text-gray-400 hover:text-white'}`}
+                    style={{ fontSize: '0.65rem', letterSpacing: '0.05em' }}
                 >
                   {item.name}
                 </Link>
+                </li>
               ))}
+            </ul>
             </nav>
           </div>
-
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
             <button
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                isRefreshing ? "animate-spin" : ""
-              }`}
-              aria-label="Refresh images"
-              title="Process new images"
-            >
-              <RefreshCw size={20} />
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className={`font-retro text-sm p-1 border-2 border-white text-white hover:bg-gray-800 hover:border-white transition-colors duration-200 rounded-full ${
+              isRefreshing ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            aria-label="Refresh images"
+            title="Process new images"
+          >
+            <RefreshCw size={16} />
             </button>
 
             <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-              aria-label="Toggle dark mode"
+            onClick={toggleDarkMode}
+            className="font-retro text-sm p-1 border-2 border-white text-white hover:bg-gray-800 hover:border-white transition-colors duration-200 rounded-full"
+            aria-label="Toggle dark mode"
             >
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
             </button>
-
-            <button
-              className="md:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              <Menu size={20} />
-            </button>
-          </div>
         </div>
-
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <nav className="md:hidden mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  pathname === item.path ? "bg-gray-100 dark:bg-gray-700" : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-        )}
       </div>
     </header>
   )

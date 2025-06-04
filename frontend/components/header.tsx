@@ -56,29 +56,29 @@ export default function Header() {
   return (
     <header className="bg-black text-white p-4 border-b-2 border-gray-700" style={{ borderColor: 'rgba(var(--border-color), 0.8)' }}>
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
           <Link href="/" className="font-bold text-white" style={{ fontSize: '0.85rem' }}>
             <span className="font-retro" style={{ fontSize: '0.85rem' }}>RETRO GALLERY</span>
-          </Link>
+            </Link>
           <span className="mx-2 text-gray-600 font-retro" style={{ fontSize: '0.85rem' }}>|</span>
           <nav>
             <ul className="flex space-x-4">
               {navItems.map((item) => (
                 <li key={item.path}>
-                  <Link
-                    href={item.path}
+                <Link
+                  href={item.path}
                     className={`font-retro ${pathname === item.path ? 'text-white border-b-2 border-white' : 'text-gray-400 hover:text-white'}`}
                     style={{ fontSize: '0.65rem', letterSpacing: '0.05em' }}
-                  >
-                    {item.name}
-                  </Link>
+                >
+                  {item.name}
+                </Link>
                 </li>
               ))}
             </ul>
-          </nav>
-        </div>
+            </nav>
+          </div>
         <div className="flex items-center space-x-4">
-          <button
+            <button
             onClick={handleRefresh}
             disabled={isRefreshing}
             className={`font-retro text-sm p-1 border-2 border-white text-white hover:bg-gray-800 hover:border-white transition-colors duration-200 rounded-full ${
@@ -88,15 +88,15 @@ export default function Header() {
             title="Process new images"
           >
             <RefreshCw size={16} />
-          </button>
+            </button>
 
-          <button
+            <button
             onClick={toggleDarkMode}
             className="font-retro text-sm p-1 border-2 border-white text-white hover:bg-gray-800 hover:border-white transition-colors duration-200 rounded-full"
             aria-label="Toggle dark mode"
-          >
+            >
             {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+            </button>
         </div>
       </div>
     </header>

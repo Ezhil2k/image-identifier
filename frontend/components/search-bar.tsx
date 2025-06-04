@@ -14,7 +14,7 @@ const SearchBar = ({ initialQuery = '' }: { initialQuery?: string }) => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     // Navigate to the current path with the new query parameter
-    router.push(`${pathname}?q=${encodeURIComponent(query)}`)
+      router.push(`${pathname}?q=${encodeURIComponent(query)}`)
   }
 
   return (
@@ -26,7 +26,7 @@ const SearchBar = ({ initialQuery = '' }: { initialQuery?: string }) => {
           placeholder="Search for images..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full py-2 pl-10 pr-4 bg-gray-900 text-white border-2 border-gray-700 rounded-lg focus:outline-none focus:border-white font-retro text-xs"
+          className="w-full py-2 pl-10 pr-4 bg-gray-900 text-white border-2 border-gray-700 rounded-lg focus:outline-none focus:border-white font-retro text-[0.65rem]"
         />
       </div>
     </form>

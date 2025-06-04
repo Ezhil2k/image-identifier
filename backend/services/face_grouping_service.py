@@ -60,7 +60,7 @@ def load_face_encodings() -> Tuple[List[np.ndarray], List[str]]:
     """Load face encodings from all images in the directory."""
     encodings = []
     paths = []
-    
+
     for filename in os.listdir(image_dir):
         if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
             image_path = os.path.join(image_dir, filename)
@@ -68,7 +68,7 @@ def load_face_encodings() -> Tuple[List[np.ndarray], List[str]]:
                 # Load image and find face encodings
                 image = face_recognition.load_image_file(image_path)
                 face_encodings = face_recognition.face_encodings(image)
-                
+
                 # Add each face encoding and its corresponding image path
                 for encoding in face_encodings:
                     encodings.append(encoding)

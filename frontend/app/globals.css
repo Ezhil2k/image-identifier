@@ -2,8 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+
+  --border-color: 60, 60, 60; /* Slightly lighter grey border */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+    --border-color: 60, 60, 60;
+  }
+}
+
+/* Apply a retro font */
+/* You would typically import a custom font here, 
+   but for demonstration, I'll use a common fallback */
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  /* Add the grid pattern background */
+  background-image: 
+    linear-gradient(to right, rgba(var(--border-color), 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(var(--border-color), 0.5) 1px, transparent 1px);
+  background-size: 20px 20px; /* Adjust grid size as needed */
+}
+
+.font-retro {
+  font-family: var(--font-press-start-2p), cursive, monospace; /* Explicitly use the CSS variable */
+}
+
+/* Style scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--background-start-rgb));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--border-color), 0.8); /* Use border color for thumb */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--border-color));
 }
 
 @layer utilities {

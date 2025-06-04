@@ -74,8 +74,8 @@ def start_watching():
                 time.sleep(retry_delay)
                 continue
                 
-            event_handler = ImageHandler()
-            observer = Observer()
+    event_handler = ImageHandler()
+    observer = Observer()
             observer.schedule(event_handler, watch_path, recursive=False)
             observer.start()
             print(f"[Watcher] Successfully started watching {watch_path}")

@@ -73,9 +73,9 @@ def start_watching():
                 print(f"[Watcher] Directory not available, attempt {attempt + 1}/{max_retries}")
                 time.sleep(retry_delay)
                 continue
-                
-    event_handler = ImageHandler()
-    observer = Observer()
+            
+            event_handler = ImageHandler()
+            observer = Observer()
             observer.schedule(event_handler, watch_path, recursive=False)
             observer.start()
             print(f"[Watcher] Successfully started watching {watch_path}")

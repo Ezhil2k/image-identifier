@@ -3,6 +3,7 @@
 import Image from "next/image"
 import type { Photo } from "@/lib/types"
 import { useState } from "react"
+import EmptyState from "./empty-state"
 
 function PhotoCard({ photo }: { photo: Photo }) {
   const [error, setError] = useState(false)
@@ -37,11 +38,7 @@ function PhotoCard({ photo }: { photo: Photo }) {
 
 export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   if (photos.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-xl text-gray-500 dark:text-gray-400">No photos found</p>
-      </div>
-    )
+    return <EmptyState message="No photos found" />
   }
 
   return (

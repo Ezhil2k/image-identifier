@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import type { FaceAlbum } from "@/lib/types"
 import { useState } from "react"
+import EmptyState from "./empty-state"
 
 function FaceAlbumCard({ album }: { album: FaceAlbum }) {
   const [error, setError] = useState(false)
@@ -38,11 +39,7 @@ function FaceAlbumCard({ album }: { album: FaceAlbum }) {
 
 export default function FacesLibrary({ faceAlbums }: { faceAlbums: FaceAlbum[] }) {
   if (faceAlbums.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-xl text-gray-500 dark:text-gray-400">No face albums found</p>
-      </div>
-    )
+    return <EmptyState message="No face albums found" />
   }
 
   return (

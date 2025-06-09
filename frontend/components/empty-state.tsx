@@ -10,6 +10,7 @@ export default function EmptyState({ message }: { message: string }) {
     "┌(・。・)┘",
     "└(・。・)┐",
   ]
+  
 
   useEffect(() => {
     const interval = setInterval(() => {

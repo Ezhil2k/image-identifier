@@ -4,6 +4,9 @@ import { Inter } from "next/font/google"
 import { Press_Start_2P } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/header"
+import { AuthProvider } from "@/lib/auth"
+import Navbar from "@/components/Navbar"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,8 +31,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} ${pressStart2P.variable}`}>
       <body className="bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100">
-        <Header />
-        <main className="container mx-auto px-4 py-6">{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <Navbar />
+            <main className="container mx-auto px-4 py-6">{children}</main>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

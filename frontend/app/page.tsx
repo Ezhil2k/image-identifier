@@ -1,13 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import ProtectedRoute from "@/components/ProtectedRoute"
 import SearchBar from "@/components/search-bar"
 import PhotoGrid from "@/components/photo-grid"
+import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { getPhotos } from "@/lib/photo-service"
 import type { Photo } from "@/lib/types"
 
-export default function HomePage() {
+export default function Home() {
   const [photos, setPhotos] = useState<Photo[]>([])
   const searchParams = useSearchParams()
   const [query, setQuery] = useState("")
@@ -42,9 +43,11 @@ export default function HomePage() {
   }, [query])
 
   return (
-    <div className="space-y-6">
-      <SearchBar initialQuery={query} />
-      <PhotoGrid photos={photos} />
-    </div>
+    <ProtectedRoute>
+      <div className="space-y-6">
+        <SearchBar initialQuery={query} />
+        <PhotoGrid photos={photos} />
+      </div>
+    </ProtectedRoute>
   )
 }

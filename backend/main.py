@@ -5,6 +5,7 @@ from services.embedding_service import process_images, search_images, remove_del
 from services.face_grouping_service import process_faces, get_face_clusters, remove_deleted_face
 from services.watcher import start_watching
 import os
+from auth.router import router as auth_router
 
 app = FastAPI()
 
@@ -25,6 +26,9 @@ app.mount("/images", StaticFiles(directory=os.getenv("IMAGE_DIR", "/app/images")
 def startup_event():
     print("[Startup] Starting image folder watcher...")
     start_watching()
+
+# Include auth router
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
 
 @app.post("/process-images")
 def process_route():
